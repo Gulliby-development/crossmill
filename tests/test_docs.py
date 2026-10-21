@@ -58,7 +58,7 @@ def _output_blocks(readme: str) -> list[str]:
         (["render"], "crossmill render GRID [--compact]"),
         (["symmetrize"], "crossmill symmetrize GRID"),
         (["pattern"], "crossmill pattern PATTERN WORDS [--limit L]"),
-        (["stats"], "crossmill stats WORDS"),
+        (["stats"], "crossmill stats WORDS [--letters N]"),
         (["domains"], "crossmill domains GRID WORDS"),
         (["forced"], "crossmill forced GRID WORDS"),
         (["fill"], "crossmill fill GRID WORDS [--limit L]"),

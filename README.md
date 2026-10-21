@@ -67,9 +67,9 @@ Lists the lexicon words matching a pattern in ascending order and reports the to
 
 ### stats
 
-crossmill stats WORDS
+crossmill stats WORDS [--letters N]
 
-Summarizes the number of unique words, shortest and longest word lengths, counts by length, and the five most frequent letters (including repeated occurrences within a word).
+Summarizes the number of unique words, shortest and longest word lengths, counts by length, and the five most frequent letters (including repeated occurrences within a word). `--letters` lists the N most frequent letters instead, with N from 1 to 26.
 
 ### domains
 
