@@ -125,11 +125,11 @@ def test_pattern_surplus_argument_reports_literal_usage() -> None:
 
 
 def test_stats_missing_argument_reports_literal_usage() -> None:
-    _assert_usage_error(["stats"], "crossmill stats WORDS")
+    _assert_usage_error(["stats"], "crossmill stats WORDS [--letters N]")
 
 
 def test_stats_surplus_argument_reports_literal_usage() -> None:
-    _assert_usage_error(["stats", "CAT", "extra"], "crossmill stats WORDS")
+    _assert_usage_error(["stats", "CAT", "extra"], "crossmill stats WORDS [--letters N]")
 
 
 def test_domains_missing_arguments_reports_literal_usage() -> None:
@@ -821,3 +821,49 @@ def test_importing_module_entry_point_has_no_output_or_exit(
     captured = capfd.readouterr()
     assert captured.out == ""
     assert captured.err == ""
+
+
+def test_stats_letters_option_limits_the_letters_row() -> None:
+    _assert_cli_report(
+        ["stats", "CAT,DOG,EMU", "--letters", "3"],
+        "words       3\nshortest    3\nlongest     3\nlength      3 x 3\nletters     A=1 C=1 D=1\n",
+    )
+
+
+def test_stats_letters_equals_form_lists_all_distinct_letters() -> None:
+    _assert_cli_report(
+        ["stats", "CAT,DOG,EMU", "--letters=26"],
+        "words       3\n"
+        "shortest    3\n"
+        "longest     3\n"
+        "length      3 x 3\n"
+        "letters     A=1 C=1 D=1 E=1 G=1 M=1 O=1 T=1 U=1\n",
+    )
+
+
+@pytest.mark.parametrize(
+    ("args", "message"),
+    [
+        (
+            ["stats", "CAT", "--letters", "0"],
+            'invalid --letters "0" (expected an integer from 1 to 26)',
+        ),
+        (
+            ["stats", "CAT", "--letters", "27"],
+            'invalid --letters "27" (expected an integer from 1 to 26)',
+        ),
+        (
+            ["stats", "CAT", "--letters", "03"],
+            'invalid --letters "03" (expected an integer from 1 to 26)',
+        ),
+        (["stats", "CAT", "--letters"], "--letters needs a value"),
+        (
+            ["stats", "D0G", "--letters", "0"],
+            'invalid --letters "0" (expected an integer from 1 to 26)',
+        ),
+    ],
+)
+def test_stats_letters_option_errors_have_exact_cli_diagnostics(
+    args: list[str], message: str
+) -> None:
+    _assert_cli_error(args, message)

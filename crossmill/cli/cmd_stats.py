@@ -6,15 +6,15 @@ from crossmill.base.text import line
 from crossmill.lexicon.stats import lexicon_stats
 from crossmill.lexicon.words import read_lexicon
 
-USAGE = "crossmill stats WORDS"
+USAGE = "crossmill stats WORDS [--letters N]"
 ARGS = 1
-SPECS: list[Spec] = []
+SPECS: list[Spec] = [Spec("--letters", 1, 26, 5)]
 
 
 def run_stats(args: list[str], options: dict[str, int], io: IO) -> tuple[str, int]:
     """Return a formatted report with word-length and letter-frequency statistics."""
     lexicon = read_lexicon(io, args[0])
-    length_counts, ranked_letters = lexicon_stats(lexicon)
+    length_counts, ranked_letters = lexicon_stats(lexicon, options.get("--letters", 5))
 
     report = [
         line("words", str(len(lexicon))),

@@ -438,3 +438,15 @@ def test_lexicon_stats_breaks_a_tie_at_fifth_place_alphabetically() -> None:
 
 def test_lexicon_stats_returns_empty_results_for_an_empty_lexicon() -> None:
     assert lexicon_stats([]) == ({}, [])
+
+
+def test_lexicon_stats_limits_the_ranking_to_the_requested_letters() -> None:
+    assert lexicon_stats(["AAA", "AB"], 1) == ({2: 1, 3: 1}, [("A", 4)])
+    assert lexicon_stats(["CAT", "DOG", "EMU"], 3) == (
+        {3: 3},
+        [("A", 1), ("C", 1), ("D", 1)],
+    )
+
+
+def test_lexicon_stats_returns_all_letters_when_fewer_than_requested() -> None:
+    assert lexicon_stats(["AAA", "AB"], 26) == ({2: 1, 3: 1}, [("A", 4), ("B", 1)])

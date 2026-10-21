@@ -54,9 +54,9 @@ def test_six_adapter_metadata_is_literal() -> None:
     assert cmd_pattern.ARGS == 2
     assert cmd_pattern.SPECS == [Spec("--limit", 1, 1000, 20)]
 
-    assert cmd_stats.USAGE == "crossmill stats WORDS"
+    assert cmd_stats.USAGE == "crossmill stats WORDS [--letters N]"
     assert cmd_stats.ARGS == 1
-    assert cmd_stats.SPECS == []
+    assert cmd_stats.SPECS == [Spec("--letters", 1, 26, 5)]
 
 
 def test_number_returns_exact_ten_slot_report_without_writing() -> None:
@@ -728,4 +728,23 @@ def test_dispatch_writes_count_report_once_and_preserves_status_zero() -> None:
     assert io.out_calls == [
         "grid        2x2\nslots       4\nwords       1\ncount       0\ncapped      no\n"
     ]
+    assert io.err_calls == []
+
+
+def test_stats_letters_option_limits_the_letters_row_to_three() -> None:
+    io = FakeIO()
+
+    result = cmd_stats.run_stats(["CAT,DOG,EMU"], {"--letters": 3}, io)
+
+    assert result == (
+        (
+            "words       3\n"
+            "shortest    3\n"
+            "longest     3\n"
+            "length      3 x 3\n"
+            "letters     A=1 C=1 D=1\n"
+        ),
+        0,
+    )
+    assert io.out_calls == []
     assert io.err_calls == []
