@@ -115,12 +115,12 @@ def test_symmetrize_surplus_argument_reports_literal_usage() -> None:
 
 
 def test_pattern_missing_arguments_reports_literal_usage() -> None:
-    _assert_usage_error(["pattern"], "crossmill pattern PATTERN WORDS [--limit L]")
+    _assert_usage_error(["pattern"], "crossmill pattern PATTERN WORDS [--limit L] [--count]")
 
 
 def test_pattern_surplus_argument_reports_literal_usage() -> None:
     _assert_usage_error(
-        ["pattern", "..", "CAT", "extra"], "crossmill pattern PATTERN WORDS [--limit L]"
+        ["pattern", "..", "CAT", "extra"], "crossmill pattern PATTERN WORDS [--limit L] [--count]"
     )
 
 
