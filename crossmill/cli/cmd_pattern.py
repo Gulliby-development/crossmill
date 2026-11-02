@@ -6,9 +6,9 @@ from crossmill.base.text import line
 from crossmill.lexicon.pattern import match_all, parse_pattern
 from crossmill.lexicon.words import read_lexicon
 
-USAGE = "crossmill pattern PATTERN WORDS [--limit L]"
+USAGE = "crossmill pattern PATTERN WORDS [--limit L] [--count]"
 ARGS = 2
-SPECS: list[Spec] = [Spec("--limit", 1, 1000, 20)]
+SPECS: list[Spec] = [Spec("--limit", 1, 1000, 20), Spec("--count", flag=True)]
 
 
 def run_pattern(args: list[str], options: dict[str, int], io: IO) -> tuple[str, int]:
@@ -16,13 +16,15 @@ def run_pattern(args: list[str], options: dict[str, int], io: IO) -> tuple[str, 
     pattern = parse_pattern(args[0])
     lexicon = read_lexicon(io, args[1])
     matches = match_all(lexicon, pattern)
-    shown = min(options["--limit"], len(matches))
-
     report = [
         line("pattern", pattern),
         line("words", str(len(lexicon))),
         line("matches", str(len(matches))),
-        line("shown", str(shown)),
     ]
+    if options.get("--count"):
+        return "".join(report), 0
+
+    shown = min(options["--limit"], len(matches))
+    report.append(line("shown", str(shown)))
     report.extend(line("word", word) for word in matches[:shown])
     return "".join(report), 0

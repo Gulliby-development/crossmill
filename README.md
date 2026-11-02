@@ -61,9 +61,9 @@ Adds blocks as needed so the grid is symmetric under a half turn, and reports th
 
 ### pattern
 
-crossmill pattern PATTERN WORDS [--limit L]
+crossmill pattern PATTERN WORDS [--limit L] [--count]
 
-Lists the lexicon words matching a pattern in ascending order and reports the total match count. `--limit` caps how many matching words are shown.
+Lists the lexicon words matching a pattern in ascending order and reports the total match count. `--limit` caps how many matching words are shown. With `--count` only the `pattern`, `words` and `matches` lines are printed, without the `shown` line and the word rows; `--limit` is still checked but has no effect then.
 
 ### stats
 

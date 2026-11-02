@@ -50,9 +50,9 @@ def test_six_adapter_metadata_is_literal() -> None:
     assert cmd_symmetrize.ARGS == 1
     assert cmd_symmetrize.SPECS == []
 
-    assert cmd_pattern.USAGE == "crossmill pattern PATTERN WORDS [--limit L]"
+    assert cmd_pattern.USAGE == "crossmill pattern PATTERN WORDS [--limit L] [--count]"
     assert cmd_pattern.ARGS == 2
-    assert cmd_pattern.SPECS == [Spec("--limit", 1, 1000, 20)]
+    assert cmd_pattern.SPECS == [Spec("--limit", 1, 1000, 20), Spec("--count", flag=True)]
 
     assert cmd_stats.USAGE == "crossmill stats WORDS [--letters N]"
     assert cmd_stats.ARGS == 1
